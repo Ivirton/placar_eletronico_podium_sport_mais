@@ -1,0 +1,31 @@
+{
+    "anunciantes": {
+        "left": "5px",
+        "top": "9px",
+        "width": "100%"
+    },
+    "cronometro": {
+        "duracao": 60,
+        "icone": "pause",
+        "pause": false,
+        "play": true,
+        "relogio": {
+            "minutos": 0,
+            "segundos": 0
+        },
+        "reset": false,
+        "tempo": "3"
+    },
+    "pause": true,
+    "placar": {
+        "infor": "PIX:  9981732569",
+        "partida": "1",
+        "pontos1": "6",
+        "pontos2": "0",
+        "status": "on",
+        "time1": "F\u00caNIX ",
+        "time2": "SIRIEMA"
+    },
+    "play": false,
+    "reset": false
+}

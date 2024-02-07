@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nossas logos</title>
+
+
+    <style>
+        #imagem {
+            width: 400px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .imagem-position {
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 150px;
+            display: flex;
+            position: relative;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="root">
+
+        <div class="imagem-position">
+            <img id="imagem" src="" alt="" srcset="">
+        </div>
+    </section>
+
+
+    <script src=""></script>
+    <script>
+        class Node {
+            constructor(dados) {
+                this.dados = dados;
+                this.proximo = null;
+            }
+        }
+        class ListaEncadeada {
+            constructor() {
+                this.cabeca = null;
+                this.cauda = null;
+                this.contador = 0;
+                this.length = 0;
+            }
+            adicionar(dados) {
+                const novoNo = new Node(dados);
+                if (!this.cabeca) {
+                    this.cabeca = novoNo;
+                    this.cauda = novoNo;
+                    novoNo.proximo = this.cabeca;
+                } else {
+                    novoNo.proximo = this.cabeca;
+                    this.cauda.proximo = novoNo;
+                    this.cauda = novoNo;
+                }
+                this.length++
+            }
+            exibir() {
+                if (!this.cabeca) {
+                    return;
+                }
+
+                let atual = this.cabeca;
+
+                do {
+                    console.log(atual.dados);
+                    atual = atual.proximo;
+                } while (atual !== this.cabeca);
+            }
+            limpar() {
+                this.cabeca = null;
+                this.cauda = null;
+                this.contador = 0
+                this.length = 0
+            }
+            isEnd(){
+               if(this.contador === this.length) return true
+               else return false
+            }
+        }
+        let lista = new ListaEncadeada();
+        let img = document.getElementById('imagem');
+        var contador = 0;
+        var database = "/list_anuncios"
+        var tempoAtual = 0;
+        let noAtual = new Node()
+        let temporizador = null;
+        //buscar dados via api
+        function setApi() {
+            fetch(database)
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    lista.limpar()
+                    for (key in data) {
+                        if (data[key].ativo != 0) {
+                            lista.adicionar(data[key])
+                        }
+                    }
+                    console.log(lista)
+                    noAtual = lista.cabeca
+                    img.setAttribute("src", noAtual.dados.url)
+                    lista.contador++
+                    temporizador = setInterval(proximo, 1000)
+                });
+        }
+        function proximo() {
+            tempoAtual++;
+            img.setAttribute("alt", tempoAtual)
+            if (noAtual.dados.tempoExibicao == tempoAtual) {
+                noAtual = noAtual.proximo
+                tempoAtual = 0
+                console.log(noAtual.dados)
+                img.setAttribute("src", noAtual.dados.url)
+                lista.contador++;
+            }
+            if(lista.isEnd()){
+                clearInterval(temporizador)
+                setApi()
+            }
+           
+           
+        }
+        setApi();
+    </script>
+</body>
+
+</html>

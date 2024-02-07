@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anuncios</title>
+<link rel="icon" href="/static/imagens/anuncios/logo_podium.png" type="image/x-icon">
+    <!-- Inclui os arquivos CSS do Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+			.table{
+				border: 1px solid #534747a1;
+				--bs-table-color-type: initial;
+				--bs-table-bg-type: initial;
+				--bs-table-color-state: initial;
+				--bs-table-bg-state: initial;
+				--bs-table-color: #fff;
+				--bs-table-bg: #272727;
+				--bs-table-border-color: var(--bs-border-color);
+				--bs-table-accent-bg: transparent;
+				--bs-table-striped-color: var(--bs-emphasis-color);
+				--bs-table-striped-bg: rgba(var(--bs-emphasis-color-rgb), 0.05);
+				--bs-table-active-color: var(--bs-emphasis-color);
+				--bs-table-active-bg: rgba(var(--bs-emphasis-color-rgb), 0.1);
+				--bs-table-hover-color: var(--bs-emphasis-color);
+				--bs-table-hover-bg: rgba(var(--bs-emphasis-color-rgb), 0.075);
+				width: 100%;
+				margin-bottom: 1rem;
+				vertical-align: top;
+				
+			}
+			body{
+				background-color: #222;
+				color:white;
+			}
+        #file{
+            width: 136px;
+            margin-right: 5px;
+        }
+       form{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+       }
+        .anuncio_botoes_acao {
+            vertical-align: middle; /* Alinhar verticalmente o conteúdo da célula */
+        }
+        #tempoExibicao{
+                width: 50px;
+                text-align: center;
+                margin-left: 11px;
+                margin-right: 10px;
+                height: 30px;
+        }
+        .ativo{
+            zoom: 250%;
+        }
+        .btn-enviar{
+            order: none;
+            border-radius: 4px;
+            width: 83px;
+            height: 33px;
+            background-color: darkgreen;
+            color: white;
+            margin-left: 8px;
+        }
+    </style>
+
+</head>
+
+<body class="body">
+	 <header>
+		 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			 <a class="navbar-brand" href="/">Controle</a>
+			 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				 <span class="navbar-toggler-icon"></span>
+			 </button>
+			 <div class="collapse navbar-collapse" id="navbarNav">
+				 <ul class="navbar-nav">
+					 <li class="nav-item">
+						 <a class="nav-link" href="/">Painel</a>
+					 </li>
+					 <li class="nav-item">
+						 <a class="nav-link" target="_blank" href="/placar_futebol">Placar</a>
+					 </li>
+					 <li class="nav-item">
+						 <a class="nav-link" href="/upload">Anúncios</a>
+					 </li>
+				 </ul>
+			 </div>
+		 </nav>
+	 </header>
+
+    <div class="container mt-5">
+  
+        <h1 class="mb-4">Enviar Imagens</h1>
+
+        <form method='POST' enctype='multipart/form-data'>
+            
+            {{form.hidden_tag()}}
+            <div class="form-group">
+                {{form.file(class="form-control-file")}}
+            </div>
+            <input type="checkbox" class="ativo" name="ativo">
+            <input type="number"  value="15" name="tempoExibicao" id="tempoExibicao">
+            <button type="submit" class="btn btn-primary" >Enviar</button>
+            
+        </form>
+        
+        <!-- Lista os arquivos já enviados -->
+        <div class="mt-4">
+            <h2>Arquivos Enviados</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ativar</th>
+                        <th>Imagem</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for anuncio in anuncios %}
+                    <tr>
+                        <td class="anuncio_botoes_acao">
+                            <input type="checkbox" class="ativo"  onclick="toggleAtivar('{{anuncio.nome}}',this)" {% if anuncio.ativo %}checked{% endif %} >
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center"> <img src='{{anuncio.url}}' alt="" class="img-fluid" style="max-width: 230px; max-height: 300px;">
+                            </div>
+                        </td>
+                        <td class="anuncio_botoes_acao">
+                            <button type="button"  onclick="remover('{{anuncio.nome}}')"  class="btn btn-danger">X</button>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Inclui os arquivos JavaScript do Bootstrap (opcional) -->
+    
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    function toggleAtivar(nome,ativo) {
+       valor = ativo.checked == true ? 1:0
+        
+        fetch("/update_ativo?ativo="+valor+"&nomeAnuncio="+nome)
+        .then((response) => response)
+        .then((data) => {
+            
+        })
+        .catch(console.error);
+        
+        
+    }
+
+    function remover(nome){
+        
+        fetch("/remove?nome="+nome)
+        .then((response) => response)
+        .then((data) => {
+            console.log(data)
+            window.location.reload()
+        })
+        .catch(console.error);
+        
+    }
+    </script>
+</body>
+
+</html>

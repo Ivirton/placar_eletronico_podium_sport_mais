@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='estilo/placar2.css') }}">
+	<title>Placar</title>
+</head>
+
+<body>
+	<main id="conteudo">
+		<section class="top">
+			<div id="placar" class="placar_{{dados.placar['status']}}">
+				<p id="infor">{{dados.placar['infor']}}</p>
+				<p id="time1">{{dados.placar['time1']}}</p>
+				<p id="time2">{{dados.placar['time2']}}</p>
+				<p id="pontos1">{{dados.placar['pontos1']}}</p>
+				<p id="pontos2">{{dados.placar['pontos2']}}</p>
+        <p id="partida">{{dados.placar['partida']}}ª</p>
+				<p id="relogio">00:00</p>
+				<img src="{{ url_for('static', filename='imagens/placar/placar_futebol1.png') }}">
+			</div >
+		</section>
+		<section class="preenchimento">
+
+		</section>
+		<section class="botton">
+			<div class="anunciantes">
+				<div class="imagem-position">
+					<img id="imagem" src="" alt="" srcset="">
+				</div>
+			</div>
+			<div class="anunciantes">
+				<div class="imagem-position">
+					<!-- <img class="marca"  src="{{ url_for('static', filename='imagens/anuncios/logo_podium.png') }}" alt="" srcset=""> -->
+				</div>
+			</div>
+		</section>
+	</main>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+	<script src="{{ url_for('static', filename='script/placar.js') }}"></script>
+	<script src="{{ url_for('static', filename='script/anuncios.js') }}"></script>
+	
+	
+</body>
+
+</html>
